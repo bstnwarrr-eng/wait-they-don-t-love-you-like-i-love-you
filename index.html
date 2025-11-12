@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Fireworks with Music</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Fireworks -->
+    <script src="newyear-fireworks-animation.js"></script>
+
+    <!-- Musik -->
+    <audio id="bg-music" src="meli.mp3" loop></audio>
+
+    <script>
+      const music = document.getElementById("bg-music");
+
+      // Kadang audio perlu diaktifkan secara eksplisit setelah gesture
+      function enableAudio() {
+        const playPromise = music.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log("Musik dimulai.");
+            })
+            .catch(() => {
+              // Jika gagal, coba paksa ulang setelah sentuhan berikutnya
+              console.log("Autoplay diblokir. Menunggu sentuhan berikutnya...");
+              document.body.addEventListener("click", enableAudio, { once: true });
+              document.body.addEventListener("touchstart", enableAudio, { once: true });
+            });
+        }
+      }
+
+      document.body.addEventListener("click", enableAudio, { once: true });
+      document.body.addEventListener("touchstart", enableAudio, { once: true });
+    </script>
+  </body>
+</html>
